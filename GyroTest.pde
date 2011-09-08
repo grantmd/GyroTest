@@ -8,7 +8,7 @@ void setup(){
   Serial.begin(115200);
   Wire.begin();
   
-  accelInit();
+  gyroInit();
   
   previousTime = millis();
 }
@@ -16,6 +16,10 @@ void setup(){
 void loop(){
   if (millis() - previousTime >= 5000){
     readAll();
+    
+    Serial.print("Temp: ");
+    Serial.println(getTemp());
+    
     
     previousTime = millis();
   }
@@ -29,17 +33,16 @@ void gyroInit(){
     Serial.println("GYRO NOT CONNECTED!");
   }
   else{
-    writeSetting(0x2D, 0x00); // Shut down
-    writeSetting(0x2D, 0x16); // Reset
-    writeSetting(0x2D, 0x08); // Power up, measure mode
-    writeSetting(0x2C, 0x0A); // 100Hz low pass filter
-    writeSetting(0x31, 0x00); // ±2 g
+    writeSetting(0x3E, 0x80); // Reset it
+    delay(50); // Give it some time to startup (20ms from the datasheet, plus wiggle room!)
+    writeSetting(0x16, 0x1D); // 10Hz low pass filter/1kHz internal sample rate
+    writeSetting(0x3E, 0x01); // use X gyro oscillator
   }
 }
 
 // Read "all" the data off the gyro and print it
 void readAll(){
-  sendReadRequest(0x32);
+  sendReadRequest(0x1D);
   requestBytes(6);
 
   for (byte axis = 0; axis <= 2; axis++) {
@@ -48,6 +51,15 @@ void readAll(){
     Serial.print(": ");
     Serial.println(readNextWordFlip());
   }
+}
+
+int getTemp(){
+  sendReadRequest(0x1B);
+  int temp = readWord();
+  temp = 35.0 + ((temp + 13200) / 280.0); // -13200 == 35C, 280 == Each degree
+  temp = 32 + (temp * 1.8); // Convert to F
+  
+  return temp;
 }
 
 //
