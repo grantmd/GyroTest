@@ -1,3 +1,25 @@
+/*
+  The simplest possible test code for the ITG-3200 gyro, specifically as packaged
+  in the IMU Digital Combo Board - 6 Degrees of Freedom ITG3200/ADXL345 from Sparkfun:
+  http://www.sparkfun.com/products/10121
+  
+  Created by Myles Grant <myles@mylesgrant.com>
+  See also: https://github.com/grantmd/QuadCopter
+  
+  This program is free software: you can redistribute it and/or modify 
+  it under the terms of the GNU General Public License as published by 
+  the Free Software Foundation, either version 3 of the License, or 
+  (at your option) any later version. 
+
+  This program is distributed in the hope that it will be useful, 
+  but WITHOUT ANY WARRANTY; without even the implied warranty of 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+  GNU General Public License for more details. 
+
+  You should have received a copy of the GNU General Public License 
+  along with this program. If not, see <http://www.gnu.org/licenses/>. 
+*/
+
 #include <Wire.h>
 
 #define I2C_ADDR 0x68 // The i2c address of the gyro
