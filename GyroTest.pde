@@ -40,7 +40,8 @@ void loop(){
     readAll();
     
     Serial.print("Temp: ");
-    Serial.println(getTemp());
+    Serial.print(getTemp());
+    Serial.println("F");
     
     
     previousTime = millis();
@@ -69,7 +70,7 @@ void readAll(){
 
   for (byte axis = 0; axis <= 2; axis++) {
     Serial.print("Axis ");
-    Serial.print(axis);
+    Serial.print(axis, DEC);
     Serial.print(": ");
     Serial.println(readNextWordFlip());
   }
